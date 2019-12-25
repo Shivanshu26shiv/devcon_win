@@ -4,19 +4,22 @@ With devcon_win, you can access all functions of devcon.exe. In addition, you ca
 <h3>Getting it:</h3>
 To download devcon_win, either fork this github repo or simply use 
 Pypi via pip.
+
+
 ```
 $ pip install devcon_win
 ```
 
 <h3>Using it:</h3>
 
-<ul>
+<ol>
 
 <li>The devcon.exe present in this rep is for '64 bit windows 10'. If your windows's version is different then download <a href='https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/devcon' target='_blank'>devcon.exe</a> as per requirement.</li>
 <li>Move devcon.exe in the script's directory.</li>
 <li>Install devcon_win from pip.</li>
 
-<li>Use devcon_win_driver.py as a sample to disable webcam or any other driver as per requirement {BE CAREFUL}:</li>
+<li>Use devcon_win_driver.py as a sample to disable webcam or any other driver as per requirement {BE CAREFUL}:
+
 ```python
 try:
     import devcon_win_copy
@@ -33,6 +36,7 @@ print(devcon_object.devcon_win_func(hardware_parm, hardware_id))
 if os.path.exists("devcon_win_copy.py"):
     os.remove("devcon_win_copy.py")
 ```
+</li>
 
-</ul>
+</ol>
 
