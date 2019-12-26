@@ -38,3 +38,5 @@ print(devcon_win.HP_TrueVision_HD('enable')) # will show options after 'devcon_w
 
 </ol>
 
+<h3>Contact:</h3>
+LinkedIn: https://www.linkedin.com/in/shivanshu26shiv/
