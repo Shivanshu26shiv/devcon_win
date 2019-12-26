@@ -1,4 +1,5 @@
-<h2>devcon_win - to access <a href='https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/devcon' target='_blank'>devcon.exe</a> in NT systems</h2>
+<h2>devcon_win - to access <a href='https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/devcon' target='_blank'>devcon.exe</a> in NT systems or simply to enable/disable device drivers</h2>
+
 With devcon_win, you can access all functions of devcon.exe. In addition, you can see all available drivers as a function.
 <br>See below for more details.
 <h3>Getting it:</h3>
