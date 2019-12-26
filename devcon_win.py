@@ -63,53 +63,51 @@ class DevconClass:
         return func_lst
 
 
-if __name__ != '__main__':
+assert sys.version_info >= (2, 7), 'Python version should be at least 2.7'
 
-    assert sys.version_info >= (2, 7), 'Python version should be at least 2.7'
+assert hasattr(sys, 'getwindowsversion'), "Operating system is not Windows"
 
-    assert hasattr(sys, 'getwindowsversion'), "Operating system is not Windows"
-
-    script_file_path_list = os.path.abspath(__file__).split('\\')
-    CURRENT_FILE_NAME_PATH = '\\'.join(os.path.abspath(__file__).split('\\')[:len(script_file_path_list)-1])+'\\'+'devcon_win.py'
-    CURRENT_FILE_NAME_COPY_PATH = CURRENT_FILE_NAME_PATH.replace('.py','_copy.py')
+script_file_path_list = os.path.abspath(__file__).split('\\')
+CURRENT_FILE_NAME_PATH = '\\'.join(os.path.abspath(__file__).split('\\')[:len(script_file_path_list)-1])+'\\'+'devcon_win.py'
+CURRENT_FILE_NAME_COPY_PATH = CURRENT_FILE_NAME_PATH.replace('.py','_copy.py')
 
 
-    if sys.version_info[0] == 3:
-        compat_text = ["      return subprocess.getoutput('devcon '+arg+  ' @\"'to_be_replaced"')',
-                       "   else:",
-                       "      if (ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, caller_script, None, 0)) !=42:"]
-    else:
-        compat_text = ["      return subprocess.check_output('devcon '+arg+  ' @\"'to_be_replaced"')',
-                       "   else:",
-                       "      if (ctypes.windll.shell32.ShellExecuteW(None, u'runas', unicode(sys.executable), unicode(caller_script), None, 0)) !=42:"]
+if sys.version_info[0] == 3:
+    compat_text = ["      return subprocess.getoutput('devcon '+arg+  ' @\"'to_be_replaced"')',
+                   "   else:",
+                   "      if (ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, caller_script, None, 0)) !=42:"]
+else:
+    compat_text = ["      return subprocess.check_output('devcon '+arg+  ' @\"'to_be_replaced"')',
+                   "   else:",
+                   "      if (ctypes.windll.shell32.ShellExecuteW(None, u'runas', unicode(sys.executable), unicode(caller_script), None, 0)) !=42:"]
 
 
-    # refer https://stackoverflow.com/a/41930586
-    def is_admin():
-        print('Authenticating with user: ' + getpass.getuser())
-        try:
-            return ctypes.windll.shell32.IsUserAnAdmin()
-        except:
-            return False
-
+# refer https://stackoverflow.com/a/41930586
+def is_admin():
+    print('Authenticating with user: ' + getpass.getuser())
     try:
-        os.remove(CURRENT_FILE_NAME_COPY_PATH)
+        return ctypes.windll.shell32.IsUserAnAdmin()
     except:
-        pass
+        return False
 
-    copyfile(CURRENT_FILE_NAME_PATH, CURRENT_FILE_NAME_COPY_PATH)
+try:
+    os.remove(CURRENT_FILE_NAME_COPY_PATH)
+except:
+    pass
 
-    try:
-        file_path = inspect.getmodule(inspect.stack()[-1][0]).__file__
-        caller_script = file_path.split('/')[-1]
-    except AttributeError:
-        caller_script = __file__
+copyfile(CURRENT_FILE_NAME_PATH, CURRENT_FILE_NAME_COPY_PATH)
 
-    int_devcon_object = DevconClass()
-    # print(final_lst)
-    with open(CURRENT_FILE_NAME_COPY_PATH, 'a') as file_obj:
-        file_obj.write(os.linesep.join(int_devcon_object.get_hardware_names_dict()))
+try:
+    file_path = inspect.getmodule(inspect.stack()[-1][0]).__file__
+    caller_script = file_path.split('/')[-1]
+except AttributeError:
+    caller_script = __file__
 
-    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-    from devcon_win_copy import *
+int_devcon_object = DevconClass()
+# print(final_lst)
+with open(CURRENT_FILE_NAME_COPY_PATH, 'a') as file_obj:
+    file_obj.write(os.linesep.join(int_devcon_object.get_hardware_names_dict()))
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from devcon_win_copy import *
 
