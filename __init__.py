@@ -1,0 +1,1 @@
+from devcon_win.devcon_win import DevconClass
