@@ -17,11 +17,11 @@ CURRENT_FILE_NAME_COPY = 'devcon_win_copy.py'
 
 to_be_replaced = 'to_be_replaced'
 if sys.version_info[0] == 3:
-    compat_text = ["   if arg in ['status', 'find'] or is_admin(): return subprocess.getoutput('devcon '+arg+  ' @\"'"+ to_be_replaced + ')',
+    compat_text = ["      return subprocess.getoutput('devcon '+arg+  ' @\"'"+ to_be_replaced + ')',
                    "   else:",
                    "      if (ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, caller_script, None, 0)) !=42:"]
 else:
-    compat_text = ["   if arg in ['status', 'find'] or is_admin(): return subprocess.check_output('devcon '+arg+  ' @\"'" + to_be_replaced + ')',
+    compat_text = ["      return subprocess.check_output('devcon '+arg+  ' @\"'" + to_be_replaced + ')',
                    "   else:",
                    "      if (ctypes.windll.shell32.ShellExecuteW(None, u'runas', unicode(sys.executable), unicode(caller_script), None, 0)) !=42:"]
 
@@ -43,7 +43,8 @@ class DevconClass:
         except AttributeError:
             parsed_info = subprocess.check_output('devcon find ' + '@"*"').splitlines()
 
-        func_lst = []
+        func_lst = ["print('Status:')",
+                    "print('')"]
         for instance in parsed_info:
             instance = instance.split(':')
             if len(instance) > 1:
@@ -54,22 +55,28 @@ class DevconClass:
                 try:
                     func_lst.extend(
                         ["def " + instance[1] + "(arg='status'):",
+                         "   print('Argument: '+str(arg))",
+                         "   if arg in ['status', 'find'] or is_admin(): ",
                          str(compat_text[0].replace('to_be_replaced', instance[0])),
                          str(compat_text[1]),
                          str(compat_text[2]),
-                         "         print('Authentication failed!')",
+                         "         print('Authentication: failed')",
                          "      else:",
-                         "         print('Authentication successful!')",
+                         "         print('Authentication: successful')",
                          "      print('')",
                          "   time.sleep(2)",
-                         "   print('Status:')",
                          "   return("+instance[1] + "('status'))"]
                     )
                 except SyntaxError:
                     continue
 
         # print(func_lst)
-        func_lst.extend(["os.remove('"+CURRENT_FILE_NAME_COPY+"')"])
+        func_lst.extend([
+            "try:",
+            "    os.remove('"+CURRENT_FILE_NAME_COPY+"')",
+            "except WindowsError:",
+            "    pass"
+        ])
         return func_lst
 
 
