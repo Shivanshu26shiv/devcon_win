@@ -36,14 +36,14 @@ print(devcon_win.HP_TrueVision_HD('status'))
 # To change status
 print(devcon_win.HP_TrueVision_HD('enable')) # will show options after 'devcon_win.'
 ```
+P.S: list of examples of devcon commands are present <a href='https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/devcon-examples' target='_blank'>here.</a>
 </li>
 
 </ol>
 
 <h3>To dos:</h3>
 <ol>
-	<li>Add argument support</li>
-	<li>Skip downloading devcon.exe</li>
+	<li>Skip downloading devcon.exe step</li>
 </ol>
 
 <h3>Contact:</h3>
