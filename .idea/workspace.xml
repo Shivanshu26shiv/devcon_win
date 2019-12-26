@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab1696d4-e55e-4ec5-8c16-1960e0c13659" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/devcon_win.py" afterPath="$PROJECT_DIR$/devcon_win.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/devcon_win_driver.py" afterPath="$PROJECT_DIR$/devcon_win_driver.py" />
     </list>
     <ignored path="devcon_win.iws" />
@@ -34,32 +33,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="devcon_win_copy.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/devcon_win_copy.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="98" column="16" selection-start-line="98" selection-start-column="16" selection-end-line="98" selection-end-column="16" />
-              <folding>
-                <element signature="e#0#39#0" expanded="true" />
-                <marker date="1577337086714" expanded="true" signature="462:724" ph="..." />
-                <marker date="1577337086714" expanded="true" signature="482:723" ph="..." />
-                <marker date="1577337086714" expanded="true" signature="730:1015" ph="..." />
-                <marker date="1577337086714" expanded="true" signature="750:1014" ph="..." />
-                <marker date="1577337086714" expanded="true" signature="1078:1231" ph="..." />
-                <marker date="1577337086714" expanded="true" signature="1252:1531" ph="..." />
-                <marker date="1577337086714" expanded="true" signature="1292:1531" ph="..." />
-                <marker date="1577337086714" expanded="true" signature="59270:59799" ph="..." />
-                <marker date="1577337086714" expanded="true" signature="59484:59730" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="devcon_win_driver.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/devcon_win_driver.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="17">
-              <caret line="1" column="38" selection-start-line="1" selection-start-column="38" selection-end-line="1" selection-end-column="38" />
+              <caret line="1" column="34" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -466,16 +444,7 @@
         <state relative-caret-position="136">
           <caret line="98" column="16" selection-start-line="98" selection-start-column="16" selection-end-line="98" selection-end-column="16" />
           <folding>
-            <element signature="e#0#39#0" expanded="true" />
-            <marker date="1577337086714" expanded="true" signature="462:724" ph="..." />
-            <marker date="1577337086714" expanded="true" signature="482:723" ph="..." />
-            <marker date="1577337086714" expanded="true" signature="730:1015" ph="..." />
-            <marker date="1577337086714" expanded="true" signature="750:1014" ph="..." />
-            <marker date="1577337086714" expanded="true" signature="1078:1231" ph="..." />
-            <marker date="1577337086714" expanded="true" signature="1252:1531" ph="..." />
-            <marker date="1577337086714" expanded="true" signature="1292:1531" ph="..." />
-            <marker date="1577337086714" expanded="true" signature="59270:59799" ph="..." />
-            <marker date="1577337086714" expanded="true" signature="59484:59730" ph="..." />
+            <element signature="e#0#39#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -491,7 +460,7 @@
     <entry file="file://$PROJECT_DIR$/devcon_win_driver.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
-          <caret line="1" column="38" selection-start-line="1" selection-start-column="38" selection-end-line="1" selection-end-column="38" />
+          <caret line="1" column="34" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
           <folding />
         </state>
       </provider>

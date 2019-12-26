@@ -25,12 +25,16 @@ devcon_win is compatible for both python2 and python3.
 
 ```python
 import devcon_win
+
+# To display status
+print(devcon_win.HP_TrueVision_HD()) 
+# Or
+print(devcon_win.HP_TrueVision_HD('status')) 
+
+# To change status
 print(devcon_win.HP_TrueVision_HD('enable')) # will show options after 'devcon_win.'
 ```
 </li>
 
 </ol>
 
-<b>
-Note: if user is not administrator, and parm passed is intended to change status of hardware instance, (like enable/disable) then code though asks user's permission and executes but returns None. 
-</b>
