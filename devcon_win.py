@@ -17,8 +17,8 @@ class DevconClass:
         except AttributeError:
             parsed_info = subprocess.check_output('devcon find ' + '@"*"').splitlines()
 
-        func_lst = ["logging.debug('Status:')",
-                    "logging.debug('')"]
+        func_lst = ["print('Status:')",
+                    "print('')"]
         for instance in parsed_info:
             instance = instance.split(':')
             if len(instance) > 1:
@@ -29,25 +29,26 @@ class DevconClass:
                 try:
                     func_lst.extend(
                         ["def " + instance[1] + "(arg='status'):",
-                         "   logging.debug('Argument: '+str(arg))",
+                         "   print('Argument: '+str(arg))",
                          "   if arg in ['status', 'find'] or is_admin(): ",
                          str(compat_text[0].replace('to_be_replaced', instance[0])),
                          str(compat_text[1]),
                          str(compat_text[2]),
-                         "         logging.debug('Authentication: failed')",
+                         "         print('Authentication: failed')",
                          "      else:",
-                         "         logging.debug('Authentication: successful')",
-                         "      logging.debug('')",
-                         "   time.sleep(2)",
+                         "         print('Authentication: successful')",
+                         "      print('')",
+                         "   print('Refreshing...')",
+                         "   time.sleep(3)",
                          "   return("+instance[1] + "('status'))"]
                     )
                 except SyntaxError:
                     continue
 
-        # logging.debug(func_lst)
+        # print(func_lst)
         func_lst.extend([
             "try:",
-            "    os.remove('"+CURRENT_FILE_NAME_COPY+"')",
+            "    os.remove('"+CURRENT_FILE_NAME_COPY_PATH+"')",
             "except WindowsError:",
             "    pass"
         ])
@@ -63,7 +64,11 @@ if __name__ != '__main__':
     assert hasattr(sys, 'getwindowsversion'), "Operating system is not Windows"
 
     CURRENT_FILE_NAME = 'devcon_win.py'
+    script_file_path = os.path.abspath(__file__)
+    script_file_path_list = script_file_path.split('\\')
+    CURRENT_FILE_NAME_PATH = '\\'.join(script_file_path.split('\\')[:len(script_file_path_list)-1])+'\\'+CURRENT_FILE_NAME
     CURRENT_FILE_NAME_COPY = 'devcon_win_copy.py'
+    CURRENT_FILE_NAME_COPY_PATH = CURRENT_FILE_NAME_PATH.replace('.py','_copy.py')
 
     to_be_replaced = 'to_be_replaced'
     if sys.version_info[0] == 3:
@@ -84,22 +89,28 @@ if __name__ != '__main__':
         except:
             return False
 
-
     try:
-        os.remove(CURRENT_FILE_NAME_COPY)
+        os.remove(CURRENT_FILE_NAME_COPY_PATH)
     except:
         pass
 
-    copyfile(CURRENT_FILE_NAME, CURRENT_FILE_NAME_COPY)
+    copyfile(CURRENT_FILE_NAME_PATH, CURRENT_FILE_NAME_COPY_PATH)
 
-    frame = inspect.stack()[-1]
-    module = inspect.getmodule(frame[0])
-    file_path = module.__file__
-    caller_script = file_path.split('/')[-1]
+    try:
+        frame = inspect.stack()[-1]
+        module = inspect.getmodule(frame[0])
+        file_path = module.__file__
+        caller_script = file_path.split('/')[-1]
+    except AttributeError:
+        caller_script = __file__
 
     int_devcon_object = DevconClass()
     final_lst = os.linesep.join(int_devcon_object.get_hardware_names_dict())
-    with open(CURRENT_FILE_NAME_COPY, 'a') as f:
+    with open(CURRENT_FILE_NAME_COPY_PATH, 'a') as f:
         f.write(final_lst)
 
+
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    
     from devcon_win_copy import *
+
