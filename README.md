@@ -1,8 +1,8 @@
-<h2>devcon_win - to access <a href='https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/devcon' target='_blank'>devcon.exe</a> interactively in NT systems</h2>
+<h2>devcon_win - to interact with <a href='https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/devcon' target='_blank'>devcon.exe</a> in NT systems using Python</h2>
 
 With devcon_win, you can access all functions of devcon.exe. In addition, you can see all available drivers as a function. Originally it was created to simply enable/disable device drivers using python.
 
-<br>See below for more details.
+See below for more details.
 <h3>Getting it:</h3>
 To download devcon_win, either fork this github repo or simply use 
 Pypi via pip.
@@ -42,9 +42,10 @@ P.S: list of examples of devcon commands are present <a href='https://docs.micro
 </ol>
 
 <h3>To dos:</h3>
-<ol>
+<ul>
 	<li>Skip downloading devcon.exe step</li>
-</ol>
+	<li>Adding voice control setup</li>
+</ul>
 
 <h3>Contact:</h3>
 LinkedIn: https://www.linkedin.com/in/shivanshu26shiv/
