@@ -1,88 +1,95 @@
-'''
-Be careful
-'''
-
+from __future__ import unicode_literals
+import os
 import sys
 import ctypes
-import getpass
+import inspect
 import subprocess
+from shutil import copyfile
+import getpass
+import time
+
+assert sys.version_info >= (2, 7), 'Python version should be at least 2.7'
+
+assert hasattr(sys, 'getwindowsversion'), "Operating system is not Windows"
+
+CURRENT_FILE_NAME = 'devcon_win.py'
+CURRENT_FILE_NAME_COPY = 'devcon_win_copy.py'
+
+to_be_replaced = 'to_be_replaced'
+if sys.version_info[0] == 3:
+    compat_text = ["   if arg in ['status', 'find'] or is_admin(): return subprocess.getoutput('devcon '+arg+  ' @\"'"+ to_be_replaced + ')',
+                   "   else:",
+                   "      if (ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, caller_script, None, 0)) !=42:"]
+else:
+    compat_text = ["   if arg in ['status', 'find'] or is_admin(): return subprocess.check_output('devcon '+arg+  ' @\"'" + to_be_replaced + ')',
+                   "   else:",
+                   "      if (ctypes.windll.shell32.ShellExecuteW(None, u'runas', unicode(sys.executable), unicode(caller_script), None, 0)) !=42:"]
 
 
-class NonWindowsOs(Exception):
-    pass
+# refer https://stackoverflow.com/a/41930586
+def is_admin():
+    print('Authenticating with user: '+getpass.getuser())
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
 
 
 class DevconClass:
 
-    def __init__(self, hardware_parm='find', hardware_id='*'):
-        self.hardware_parm = hardware_parm
-        self.hardware_id = hardware_id
-
-    def devcon_win_func(self, hardware_parm, hardware_id):
-
-        """This function uses devcon. devcon_win_func(hardware_parm, instance_name)
-            Examples of hardware_parm: find, enable, disable...
-            List of instance_names: devcon_object.get_hardware_names_dict()"""
-
-        if not hasattr(sys, 'getwindowsversion'):
-            raise NonWindowsOs("Operating system is not Windows")
-
-        # refer https://stackoverflow.com/a/41930586
-        def is_admin():
-            try:
-                return ctypes.windll.shell32.IsUserAnAdmin()
-            except:
-                return False
-
-        if hardware_parm in ['status', 'find'] or is_admin():
-            var = 'devcon ' + hardware_parm + ' ' + '@"' + hardware_id + '"'
-            return subprocess.getoutput(var)
-        else:
-            # Re-run the program with admin rights
-            print('User ' + getpass.getuser() + ' is not admin. Trying to execute with admin privilege...')
-            # below statement will run only the command which needed admin privilege, nothing else
-            if ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1) != 42:
-                print('Command execution failed!')
-            else:
-                print('Command executed successfully!')
-
-
     def get_hardware_names_dict(self):
-        parsed_info = self.devcon_win_func('find', '*').splitlines()
-        hardware_names_dict = {}
-        for e in parsed_info:
-            e = e.split(':')
-            if len(e) > 1:
-                e[0] = repr(e[0].strip())
-                e[1] = e[1].strip().replace(' ', '_')
-                hardware_names_dict[e[1]]= e[0]
-
-        return hardware_names_dict
-
-
-if __name__ == "__main__":
-    import os
-    from shutil import copyfile
-
-    devcon_internal_object = DevconClass()
-    func_lst = []
-    internal_dict = devcon_internal_object.get_hardware_names_dict()
-    for instance_name, instance_id in internal_dict.items():
-        instance_name = instance_name.translate({ord(cardinal): '_' for cardinal in r'-()/.!@#$%^&*<>?\|}{~:}'})
         try:
-            func_lst.append("def " + instance_name + "(): return " + instance_id)
-        except SyntaxError:
-            continue
+            parsed_info = subprocess.getoutput('devcon find ' + '@"*"').splitlines()
+        except AttributeError:
+            parsed_info = subprocess.check_output('devcon find ' + '@"*"').splitlines()
 
-    def filer():
-        copyfile("devcon_win.py", "devcon_win_copy.py")
-        final_lst = os.linesep.join(func_lst)
-        with open("devcon_win_copy.py", 'a') as f:
-            f.write(final_lst)
+        func_lst = []
+        for instance in parsed_info:
+            instance = instance.split(':')
+            if len(instance) > 1:
+                instance[0] = repr(instance[0].strip())
+                # https://stackoverflow.com/a/23996445
+                instance[1] = instance[1].strip().translate({ord(cardinal): '_' for cardinal in ' -()/.!@#$%^&*<>?\|}{~:}'})
+
+                try:
+                    func_lst.extend(
+                        ["def " + instance[1] + "(arg='status'):",
+                         str(compat_text[0].replace('to_be_replaced', instance[0])),
+                         str(compat_text[1]),
+                         str(compat_text[2]),
+                         "         print('Authentication failed!')",
+                         "      else:",
+                         "         print('Authentication successful!')",
+                         "      print('')",
+                         "   time.sleep(2)",
+                         "   print('Status:')",
+                         "   return("+instance[1] + "('status'))"]
+                    )
+                except SyntaxError:
+                    continue
+
+        # print(func_lst)
+        func_lst.extend(["os.remove('"+CURRENT_FILE_NAME_COPY+"')"])
+        return func_lst
+
+
+if __name__ != '__main__':
 
     try:
-        os.remove("devcon_win_copy.py")
-        filer()
-    except (FileNotFoundError, OSError):
-        filer()
+        os.remove(CURRENT_FILE_NAME_COPY)
+    except:
+        pass
 
+    copyfile(CURRENT_FILE_NAME, CURRENT_FILE_NAME_COPY)
+
+    frame = inspect.stack()[-1]
+    module = inspect.getmodule(frame[0])
+    file_path = module.__file__
+    caller_script = file_path.split('/')[-1]
+
+    int_devcon_object = DevconClass()
+    final_lst = os.linesep.join(int_devcon_object.get_hardware_names_dict())
+    with open(CURRENT_FILE_NAME_COPY, 'a') as f:
+        f.write(final_lst)
+
+    from devcon_win_copy import *
