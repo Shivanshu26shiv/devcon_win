@@ -1,1 +1,1 @@
-from devcon_win.devcon_win import DevconClass
+from devcon_win_copy import *
