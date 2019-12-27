@@ -41,11 +41,8 @@ P.S: list of examples of devcon commands are present <a href='https://docs.micro
 
 </ol>
 
-<h3>To dos:</h3>
+<h3>Contact:</h3>
 <ul>
-	<li>Skip downloading devcon.exe step</li>
-	<li>Adding voice control setup</li>
+<li>LinkedIn: https://www.linkedin.com/in/shivanshu26shiv/</li>
 </ul>
 
-<h3>Contact:</h3>
-LinkedIn: https://www.linkedin.com/in/shivanshu26shiv/
