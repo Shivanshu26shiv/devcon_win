@@ -23,7 +23,7 @@ devcon_win is compatible for both python2 and python3.
 <li>Move devcon.exe in the current script's directory or any path defined in environment variables say Python27/Scripts.</li>
 <li>Install devcon_win from pip.</li>
 
-<li>Use <b>devcon_win_driver.py</b> as a sample to <b>disable webcam</b> or any other driver as per requirement <b>{BE CAREFUL}</b>:
+<li>Use below code as a sample to <b>disable webcam</b> or any other driver as per requirement <b>{BE CAREFUL}</b>:
 
 ```python
 import devcon_win
