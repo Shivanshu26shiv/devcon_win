@@ -41,10 +41,10 @@ P.S: list of examples of devcon commands are present <a href='https://docs.micro
 
 </ol>
 
-<h3>Issues:</h3>
-<ol>
-<li>If user is non-Admin and env is python-2 then some times, driver status is not changed. Though tool works fine when run in admin mode.</li>
-</ol>
+<h3>Note:</h3>
+<ul>
+<li>To change status, tool requires admin privileges. To view, no admin rights needed.</li>
+</ul>
 
 <h3>Contact:</h3>
 <ul>
