@@ -1,16 +1,18 @@
 from __future__ import unicode_literals
-import os
-import sys
-import time
+
 import ctypes
-import inspect
-import subprocess
 import getpass
+import inspect
+import os
+import subprocess
+import sys
 from shutil import copyfile
 
-class DevconClass:
 
-    def get_hardware_names_dict(self):
+class DevconClass(object):
+
+    @staticmethod
+    def get_hardware_names_dict():
         try:
             parsed_info = subprocess.getoutput('devcon find ' + '@"*"').splitlines()
         except AttributeError:
@@ -39,7 +41,7 @@ class DevconClass:
                          "   print('Refreshing...')",
                          "   print('')",
                          "   time.sleep(3)",
-                         "   return("+instance[1] + "('status'))"]
+                         "   return(" + instance[1] + "('status'))"]
                     )
                 except SyntaxError:
                     continue
@@ -68,9 +70,8 @@ assert sys.version_info >= (2, 7), 'Python version should be at least 2.7'
 assert hasattr(sys, 'getwindowsversion'), "Operating system is not Windows"
 
 script_file_path_list = os.path.abspath(__file__).split('\\')
-CURRENT_FILE_NAME_PATH = '\\'.join(os.path.abspath(__file__).split('\\')[:len(script_file_path_list)-1])+'\\'+'devcon_win.py'
-CURRENT_FILE_NAME_COPY_PATH = CURRENT_FILE_NAME_PATH.replace('.py','_copy.py')
-
+CURRENT_FILE_NAME_PATH = '\\'.join(os.path.abspath(__file__).split('\\')[:len(script_file_path_list) - 1]) + '\\' + 'devcon_win.py'
+CURRENT_FILE_NAME_COPY_PATH = CURRENT_FILE_NAME_PATH.replace('.py', '_copy.py')
 
 if sys.version_info[0] == 3:
     compat_text = ["      return subprocess.getoutput('devcon '+arg+  ' @\"'to_be_replaced"')',
@@ -87,12 +88,13 @@ def is_admin():
     print('Authenticating with user: ' + getpass.getuser())
     try:
         return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
+    except Exception:
         return False
+
 
 try:
     os.remove(CURRENT_FILE_NAME_COPY_PATH)
-except:
+except Exception:
     pass
 
 copyfile(CURRENT_FILE_NAME_PATH, CURRENT_FILE_NAME_COPY_PATH)
@@ -110,4 +112,3 @@ with open(CURRENT_FILE_NAME_COPY_PATH, 'a') as file_obj:
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from devcon_win_copy import *
-
