@@ -7,6 +7,7 @@ import os
 import subprocess
 import sys
 from shutil import copyfile
+import time
 
 
 class DevconClass(object):
@@ -24,7 +25,7 @@ class DevconClass(object):
             if len(instance) > 1:
                 instance[0] = repr(instance[0].strip())
                 # https://stackoverflow.com/a/23996445
-                instance[1] = instance[1].strip().translate({ord(cardinal): '_' for cardinal in ' -()/.!@#$%^&*<>?\|}{~:}'})
+                instance[1] = instance[1].strip().translate({ord(cardinal): '_' for cardinal in u' -()/.!@#$%^&*<>?\\|}{~:"\'+~`=[];|,€'})
 
                 try:
                     func_lst.extend(
